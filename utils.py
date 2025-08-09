@@ -27,7 +27,9 @@ def generatetextquestion(context,instruction,number,length,info):
         system_instruction=[types.Part.from_text(text="""You are a question generation AI. Based on the context I provide, generate questions according to the detailed specifications. follow the format {1:\" question text \",2:\" question text \" .....}"""),],)
 
     response = client.models.generate_content(model=model,contents=contents,config=generate_content_config,)
-    questions_dict = ast.literal_eval(response.text)
+    text = response.text.replace("json","")
+    text = text.replace("```","")
+    questions_dict = ast.literal_eval(text)
     return list(questions_dict.values())
     
     
@@ -99,7 +101,9 @@ don't write json and all , just the above format only
     )
 
     # Convert the response to Python dict
-    mcq_dict = ast.literal_eval(response.text)
+    text = response.text.replace("json","")
+    text = text.replace("```","")
+    mcq_dict = ast.literal_eval(text)
     return list(mcq_dict.values())
 
 
@@ -167,8 +171,9 @@ don't write json and all , just the above format only
     )
 
     # Convert response to Python dict
-    
-    tf_dict = ast.literal_eval(response.text)
+    text = response.text.replace("json","")
+    text = text.replace("```","")
+    tf_dict = ast.literal_eval(text)
     return list(tf_dict.values())
 
 
